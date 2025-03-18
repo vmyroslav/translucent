@@ -20,10 +20,6 @@ pub fn load_config(matches: ArgMatches) -> Result<AppConfig, Box<dyn std::error:
         config.server.port = *port;
     }
 
-    if let Some(threads) = matches.get_one::<usize>("threads") {
-        config.worker_threads = *threads;
-    }
-
     Ok(config)
 }
 

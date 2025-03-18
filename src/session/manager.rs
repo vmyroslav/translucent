@@ -5,7 +5,7 @@ use crate::session::{SessionId, SessionConfig, SessionMode};
 use axum::{
     body::{Bytes, Body, to_bytes},
     extract::Request,
-    response::{Response, IntoResponse},
+    response::{Response},
     http::StatusCode,
 };
 
@@ -13,23 +13,16 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Instant;
 use tokio::sync::{RwLock, Mutex};
-use hyper::{
-    client::conn::http1::Builder,
-    body::Incoming,
-    Method, Uri,
-};
 use hyper_util::{
     rt::TokioExecutor,
     client::legacy::connect::HttpConnector,
 };
 use http_body_util::{BodyExt, Full};
-use log::{info, debug, error};
 
 // Session manager that handles multiple sessions
 pub struct SessionManager {
     storage: Arc<dyn Storage>,
     sessions: RwLock<HashMap<SessionId, Arc<Session>>>,
-    worker_count: usize,
 }
 
 struct Session {
@@ -43,11 +36,10 @@ struct Session {
 
 impl SessionManager {
     // Create a new session manager
-    pub fn new(storage: Arc<dyn Storage>, worker_count: usize) -> Self {
+    pub fn new(storage: Arc<dyn Storage>) -> Self {
         Self {
             storage,
             sessions: RwLock::new(HashMap::new()),
-            worker_count,
         }
     }
 

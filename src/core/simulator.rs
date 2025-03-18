@@ -16,13 +16,13 @@ pub struct ApiSimulator {
 impl ApiSimulator {
     // Create a new simulator instance
     pub async fn new(config: AppConfig) -> Result<Self, Box<dyn std::error::Error>> {
-        info!("Initializing API Simulator with {} worker threads", config.worker_threads);
+        info!("Initializing API Simulator");
 
         // Initialize storage based on configuration
         let storage = StorageFactory::create_storage(&config.storage)?;
 
         // Initialize session manager with worker threads
-        let session_manager = Arc::new(SessionManager::new(storage.clone(), config.worker_threads));
+        let session_manager = Arc::new(SessionManager::new(storage.clone()));
 
         // Initialize HTTP server
         let server = Server::new(
