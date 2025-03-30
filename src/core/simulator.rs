@@ -22,7 +22,7 @@ impl ApiSimulator {
         let storage = StorageFactory::create_storage(&config.storage)?;
 
         // Initialize session manager with worker threads
-        let session_manager = Arc::new(SessionManager::new(storage.clone()));
+        let session_manager = Arc::new(SessionManager::new(storage.clone(), Some(config.clone())));
 
         // Initialize HTTP server
         let server = Server::new(

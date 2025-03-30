@@ -1,11 +1,14 @@
 use api_simulator::config;
 use api_simulator::core::ApiSimulator;
 use clap::{Command, Arg};
+use log::info;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setup logging
-    env_logger::init();
+    env_logger::Builder::new()
+        .filter_level(log::LevelFilter::Debug)
+        .init();
 
     // Parse command line arguments
     let matches = Command::new("translucent")
@@ -45,6 +48,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Start the server
     simulator.run().await?;
+
+    info!("Server started on");
 
     Ok(())
 }
